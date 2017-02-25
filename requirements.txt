@@ -1,0 +1,4 @@
+flask
+zappa
+Flask-SQLAlchemy
+pymysql
