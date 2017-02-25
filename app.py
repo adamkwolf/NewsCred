@@ -111,14 +111,14 @@ def add_rating():
         return 'Rated!', 201
 
 
-@app.route('/rating/<article_id>/', methods=['GET'])
+@app.route('/article/<article_id>/rating', methods=['GET'])
 def get_article_rating(article_id):
     if request.method == 'GET':
         rating = get_rating_by_article_id(db.session, article_id)
         return jsonify(rating=rating), 200
 
 
-@app.route('/author/<author_id>/', methods=['GET'])
+@app.route('/author/<author_id>/rating', methods=['GET'])
 def get_author_rating(author_id):
     if request.method == 'GET':
         author_articles = db.session.query(Article).filter_by(author_id=author_id).all()
