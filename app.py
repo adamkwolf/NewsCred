@@ -1,9 +1,43 @@
+import hashlib
+import json
+import urllib
+import boto3
+
+from base64 import b64decode
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+
+SECRETS = b64decode(
+    'AQECAHg9ZtQddnXseUhr0aIjd2DO5G'
+    'wSp9T4TJbbdHISTvNqwwAAAPswgfgG'
+    'CSqGSIb3DQEHBqCB6jCB5wIBADCB4Q'
+    'YJKoZIhvcNAQcBMB4GCWCGSAFlAwQB'
+    'LjARBAy8S8+XFEvkCCUayOICARCAgb'
+    'PSdhpycaU/cIZtPOq8wbr2g6nPENV8'
+    'JgRZiedQV/QsocchupRKlEf1jfQLtQ'
+    'tCttbkmG5f4rO7Yvl6WRWotxKRjKnp'
+    'kuUX9MS+244udZrgmu/3yZHXYFTLUY'
+    '+b3a/koNU3WvmTQLH6wGM55IbvP/n8w'
+    'mIt9UbFUTc2wRrl3K8bF9Qub1A2xspN'
+    'lgsgcu+xV0NCkyKsqPB1xDshEwljURo'
+    'CHt8cKgttMGFLNQLbrNAtJifgxg=='
+)
+
+
+def get_credentials():
+    kms_client = boto3.client('kms')
+    import pdb; pdb.set_trace()
+    creds = json.loads(kms_client.decrypt(CiphertextBlob=SECRETS)['Plaintext'])
+    return creds
+
+CREDENTIALS = get_credentials()
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://<username>:<password>@newscred.cbtlqiwse6cm.us-east-1.rds.amazonaws.com:3306/codefest'
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    'mysql+pymysql://{}:{}@newscred.cbtlqiwse6cm.us-east-1.rds.amazonaws.com:3306/codefest'.format(
+        CREDENTIALS['db_user'], CREDENTIALS['db_password'])
 db = SQLAlchemy(app)
 
 
@@ -50,6 +84,7 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     url = db.Column(db.String(255))
+    snapshot = db.Column(db.String(255))
 
     site_id = db.Column(db.Integer, db.ForeignKey('site.id'))
     site = db.relationship('Site', backref=db.backref('article', lazy='dynamic'))
@@ -61,11 +96,12 @@ class Article(db.Model):
         db.UniqueConstraint('url', 'site_id'),
     )
 
-    def __init__(self, title, url, site, author):
+    def __init__(self, title, url, site, author, snapshot=None):
         self.title = title
         self.url = url
         self.site = site
         self.author = author
+        self.snapshot = snapshot
 
     def __repr__(self):
         return '<Article %r>' % self.title
@@ -170,7 +206,9 @@ def get_or_create_article(session, title, url, site, author):
     if article:
         return article
     else:
-        article = Article(title, url, site, author)
+        snapshot_url = take_snapshot(url)
+        import pdb; pdb.set_trace()
+        article = Article(title, url, site, author, snapshot_url)
         session.add(article)
     return article
 
@@ -193,6 +231,19 @@ def get_or_create_rating(session, user, score, article):
         rating = Rating(user, score, article)
         session.add(rating)
     return rating
+
+
+def take_snapshot(url, **args):
+    access_key = CREDENTIALS['sslayer_access_key']
+    secret_keyword = CREDENTIALS['sslayer_secret_keyword']
+
+    # encode URL
+    query = urllib.urlencode(dict(url=url, width=350, **args))
+
+    # generate md5 secret key
+    secret_key = hashlib.md5('{}{}'.format(url, secret_keyword)).hexdigest()
+
+    return "https://api.screenshotlayer.com/api/capture?access_key=%s&secret_key=%s&%s" % (access_key, secret_key, query)
 
 
 if __name__ == '__main__':
