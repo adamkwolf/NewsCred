@@ -1,4 +1,4 @@
-{
+ {
   "name": "come up with a name",
   "version": "0.0.1",
   "manifest_version": 2,
@@ -23,22 +23,18 @@
     {
       "matches": [
         "http://www.cnn.com/*",
-        "http://abcnews.go.com/*",
         "https://www.nytimes.com/*"
       ],
       "css": [
         "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "http://www.cnn.com/*",
-        "http://abcnews.go.com/*",
-        "https://www.nytimes.com/*"
       ],
       "js": [
-        "src/inject/inject.js"
+        "src/inject/inject.js",
+        "src/jquery-3.1.1.min.js"
       ]
     }
-  ]
+  ],
+   "web_accessible_resources": [
+     "src/images/*"
+   ]
 }
