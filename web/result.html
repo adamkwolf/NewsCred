@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Newscred</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-light_blue.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
+
+    <link href="css/flag.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src='https://cdn.rawgit.com/davatron5000/Lettering.js/5a4897f9/jquery.lettering.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <script src="js/index.js"></script>
+
+
+
+
+
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    </style>
+  </head>
+  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+
+        <!-- spacer + title -->
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+        </div>
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+          <a href="index.html"><h1 class="flag" style="margin-bottom: 40px">NEWSCRED</h1></a>
+        </div>
+
+
+        <!-- add icon -->
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+
+          <form class="form-wrapper cf">
+              <input type="text" placeholder="Search articles and authors..." required>
+              <button type="submit">Search</button>
+          </form>
+
+<!--           <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
+            <i class="material-icons" role="presentation">add</i>
+            <span class="visuallyhidden">Add</span>
+          </button> -->
+        </div>
+
+      </header>
+
+      <main class="mdl-layout__content">
+
+        <div class="mdl-layout__tab-panel is-active" id="overview">
+
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+
+
+            <div class="mdl-cell mdl-cell--12-col">
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Author:</span>
+              </div>
+
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Rating:</span>
+              </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--6-col">
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>News Source:</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Source Rating:</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article Rating:</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Tags:</span>
+              </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--6-col">
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article snapshot</span>
+              </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--12-col">
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article 1</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article 2</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article 3</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article 4</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col">
+                <span>Article N</span>
+              </div>
+            </div>
+<!-- style="border-style: solid; border-width: 1px"  show grid borders --> 
+          </section>
+        </div>
+
+        <footer class="mdl-mega-footer">
+          <div class="mdl-mega-footer--middle-section">
+            <div class="mdl-mega-footer--drop-down-section">
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+          </div>
+          <div class="mdl-mega-footer--bottom-section">
+          </div>
+        </footer>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>
