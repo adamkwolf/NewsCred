@@ -2,6 +2,7 @@ import hashlib
 import json
 import urllib
 import boto3
+import requests
 
 from base64 import b64decode
 from flask import Flask, request, jsonify
@@ -27,7 +28,6 @@ SECRETS = b64decode(
 
 def get_credentials():
     kms_client = boto3.client('kms')
-    import pdb; pdb.set_trace()
     creds = json.loads(kms_client.decrypt(CiphertextBlob=SECRETS)['Plaintext'])
     return creds
 
@@ -84,7 +84,7 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     url = db.Column(db.String(255))
-    snapshot = db.Column(db.String(255))
+    snapshot = db.Column(db.Text)
 
     site_id = db.Column(db.Integer, db.ForeignKey('site.id'))
     site = db.relationship('Site', backref=db.backref('article', lazy='dynamic'))
@@ -207,7 +207,6 @@ def get_or_create_article(session, title, url, site, author):
         return article
     else:
         snapshot_url = take_snapshot(url)
-        import pdb; pdb.set_trace()
         article = Article(title, url, site, author, snapshot_url)
         session.add(article)
     return article
@@ -238,12 +237,17 @@ def take_snapshot(url, **args):
     secret_keyword = CREDENTIALS['sslayer_secret_keyword']
 
     # encode URL
-    query = urllib.urlencode(dict(url=url, width=350, **args))
+    query = urllib.urlencode(dict(url=url, width=350, format='PNG', placeholder=1, **args))
 
     # generate md5 secret key
     secret_key = hashlib.md5('{}{}'.format(url, secret_keyword)).hexdigest()
 
-    return "https://api.screenshotlayer.com/api/capture?access_key=%s&secret_key=%s&%s" % (access_key, secret_key, query)
+    url = "https://api.screenshotlayer.com/api/capture?access_key=%s&secret_key=%s&%s" % (access_key, secret_key, query)
+
+    # make get request to preload the snapshot
+    requests.get(url)
+
+    return url
 
 
 if __name__ == '__main__':

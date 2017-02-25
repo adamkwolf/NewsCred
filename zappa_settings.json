@@ -1,6 +1,6 @@
 {
     "dev": {
         "app_function": "app.app", 
-        "s3_bucket": "codefest-newscred"
+        "s3_bucket": "codefest2017-newscred"
     }
 }
