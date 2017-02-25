@@ -112,15 +112,22 @@ def add_rating():
 
 
 @app.route('/rating/<article_id>/', methods=['GET'])
-def get_rating(article_id):
+def get_article_rating(article_id):
     if request.method == 'GET':
-        sum_score = 0
-        article_ratings = get_rating_by_article_id(db.session, article_id)
+        rating = get_rating_by_article_id(db.session, article_id)
+        return jsonify(rating=rating), 200
 
-        for rating in article_ratings:
-            sum_score += rating.score
 
-        rating = sum_score / len(article_ratings)
+@app.route('/author/<author_id>/', methods=['GET'])
+def get_author_rating(author_id):
+    if request.method == 'GET':
+        author_articles = db.session.query(Article).filter_by(author_id=author_id).all()
+
+        sum_ratings = 0
+        for article in author_articles:
+            sum_ratings += get_rating_by_article_id(db.session, article.id)
+
+        rating = sum_ratings / len(author_articles)
 
         return jsonify(rating=rating), 200
 
@@ -128,7 +135,14 @@ def get_rating(article_id):
 def get_rating_by_article_id(session, article_id):
     ratings = session.query(Rating).filter_by(article_id=article_id).all()
 
-    return ratings
+    sum_score = 0
+
+    for rating in ratings:
+        sum_score += rating.score
+
+    rating = sum_score / len(ratings)
+
+    return rating
 
 
 def get_or_create_user(session, username, email):
