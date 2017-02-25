@@ -66,6 +66,13 @@ class Author(db.Model):
     def __repr__(self):
         return '<Author %r %r>' % (self.first_name, self.last_name)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+        }
+
 
 class Site(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -105,6 +112,16 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article %r>' % self.title
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'url': self.url,
+            'site': self.site,
+            'author': self.author.serialize(),
+            'snapshot': self.snapshot
+        }
 
 
 class Rating(db.Model):
@@ -166,6 +183,28 @@ def get_author_rating(author_id):
         rating = sum_ratings / len(author_articles)
 
         return jsonify(rating=rating), 200
+
+
+@app.route('/author/list', methods=['GET'])
+def get_author_list():
+    if request.method == 'GET':
+        response = []
+        authors = db.session.query(Author).all()
+        for author in authors:
+            response.append(author.serialize())
+
+        return jsonify(response), 200
+
+
+@app.route('/article/list', methods=['GET'])
+def get_article_list():
+    if request.method == 'GET':
+        response = []
+        articles = db.session.query(Article).all()
+        for article in articles:
+            response.append(article.serialize())
+
+        return jsonify(response), 200
 
 
 def get_rating_by_article_id(session, article_id):
