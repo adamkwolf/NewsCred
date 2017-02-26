@@ -1,8 +1,39 @@
 chrome.runtime.sendMessage({}, function(response) {
   $(document).ready(function(){
     var submitHandler = function(e) {
-      var comment = $("#comment-field").value;
-      var rating = $("input[name='art-score']:checked").value;
+      HOSTNAME_ROOT = "http://localhost:5000";
+      var submitUrl = HOSTNAME_ROOT + '/api/submit';
+      $.ajax({
+              type: "POST",
+              crossDomain: true,
+              dataType: 'json',
+              data: JSON.stringify({
+                "article": {
+                  "title": "This is not cnn news",
+                  "url": "http://www.foxnews.com/politics/2017/02/25/obama-democratic-super-group-unite-to-end-gerrymandering-win-state-races-reclaim-majorities.html",
+                  "author_name": metaAuthor.split
+                },
+                "rating": {
+                  "score": $("input[name='art-score']:checked").value,
+                  "comment": $("#comment-field").value,
+                },
+                "site": {
+                  "company": "CNN",
+                  "url": "http://cnn.com/"
+                },
+                "user": {
+                  "username": "kento",
+                  "email": "kento@gmail.com"
+                }
+              }),
+              url: submitUrl,
+              success: function(data) {
+                $("#newscred_submit").value = 'Rated!'
+              },
+              error: function(data) {
+                console.log(data);
+              }
+            });
       e.preventDefault()
     };
 
@@ -79,9 +110,30 @@ chrome.runtime.sendMessage({}, function(response) {
       authorBody.parentElement.setAttribute("data-html", "true");
       var popover = makePopover();
       // console.log(popover);
+
       authorBody.parentElement.appendChild(makePopover());
       var popup = document.getElementById('popover');
       popup.setAttribute("style", "width: 800px; z-index: 9999; margin: 40px 20px;")
+
+      HOSTNAME_ROOT = "http://localhost:5000";
+      var authorUrl = HOSTNAME_ROOT + '/api/author/' + metaAuthor + '/';
+      var submitUrl = HOSTNAME_ROOT + '/api/submit';
+      var authorUrl = HOSTNAME_ROOT + '/api/author/' + metaAuthor + '/';
+      $.ajax({
+              type: "GET",
+              crossDomain: true,
+              dataType: 'jsonp',
+              url: authorUrl,
+              success: function(data) {
+                ratingDiv.setAttribute("style","font-weight: bold");
+                ratingDiv.innerText = "Article Rating (of 5): " + data.result.rating;
+                popup.append(ratingDiv);
+
+              },
+              error: function(data) {
+                console.log(data);
+              }
+            });
 
       // console.log($("#newscred-submit").length);
       // $('[data-toggle="popover"]').popover({ container: 'body'});
