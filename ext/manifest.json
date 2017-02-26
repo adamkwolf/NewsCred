@@ -26,15 +26,18 @@
         "https://www.nytimes.com/*"
       ],
       "css": [
-        "src/inject/inject.css"
+        "src/inject/inject.css",
+        "css/bootstrap.css"
       ],
       "js": [
         "src/inject/inject.js",
-        "src/jquery-3.1.1.min.js"
+        "js/jquery-3.1.1.js",
+        "js/bootstrap.js"
       ]
     }
   ],
    "web_accessible_resources": [
-     "src/images/*"
+     "src/images/*",
+     "img/*"
    ]
 }

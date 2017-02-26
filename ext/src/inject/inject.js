@@ -1,75 +1,75 @@
 chrome.runtime.sendMessage({}, function(response) {
-	// var readyStateCheckInterval = setInterval(function() {
-	// if (document.readyState === "complete") {
-	// 	clearInterval(readyStateCheckInterval);
-    //
-	// 	var url = document.URL;
-	// 	var sites = [
-	// 		"http://www.cnn.com/"
-	// 	]
-    //
-	// 	// <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	// 	// <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-	// 	// <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    //
-	// 	// var link = document.createElement("link");
-	// 	// link.href = "http://example.com/mystyle.css";
-	// 	// link.type = "text/css";
-	// 	// link.rel = "stylesheet";
-	// 	// document.getElementsByTagName("head")[0].appendChild(link);
-    //
-	// 	// var createLink(rel, href) {
-	// 	// 	var link = document.createElement("link");
-	// 	// 	link.href = href;
-	// 	// 	link.rel = rel
-	// 	// }
-    //
-	// 	// var createScript() {
-    //
-	// 	// }
-    //
-	// 	try {
-	// 		//for (var i = 0; i < sites.length; i++) {
-    //
-	// 			var metaAuthor = document.head.querySelector("[name=author]");
-	// 			if (metaAuthor.content != undefined) {
-	// 				metaAuthor = metaAuthor.content;
-	// 			}
-	// 			console.log(metaAuthor);
-    //
-	// 			var div = document.createElement("div");
-	// 			div.setAttribute("id", "authorsId");
-	// 			div.innerText = "Test Element";
-	// 			var authorBody = document.getElementsByClassName('metadata__byline__author')[0];
-	// 			authorBody.append(div);
-    //
-	// 			// if (url.includes(sites[i])) {
-	// 			// 	var authorObj = document.getElementsByClassName('metadata__byline__author')[0];
-	// 			// 	var author;
-	// 			// 	if (authorObj.length != 0) {
-	// 			// 		author = authorObj.innerText.substring(3, authorObj.innerText.length - 5);
-	// 			// 	} else {
-	// 			// 		author = authorObj.children[0].innerText;
-	// 			// 	}
-    //
-	// 			// 	console.log({
-	// 			// 		author: author,
-	// 			// 		url: document.URL
-	// 			// 	});
-    //
-	// 			// 	break
-	// 			// }
-    //
-    //
-	// 		//}
-	// 	} catch (e) {
-	// 		// do nothing
-	// 		console.log("No author found");
-	// 	}
-    //
-	// }
-	// }, 10);
     $(document).ready(function(){
+
+        var makePopover = function() {
+            var popover = document.createElement("div");
+            popover.setAttribute("class", "container");
+            popover.setAttribute("style", "display: inline; float:right");
+            var a = document.createElement("a");
+            a.setAttribute("href", "#");
+            a.setAttribute("title", "Rate this article");
+            a.setAttribute("data-toggle", "popover");
+            //a.setAttribute("data-trigger", "focus");
+            a.setAttribute("data-html", "true");
+            a.setAttribute("width", "500px");
+
+            var form =
+            '<style>'+
+                '.popover {'+
+                  'max-width: 600px;'+
+                  'width: auto;'+
+                '}'+
+            '</style>'+
+
+            '<form class="form-horizontal">' +
+            '<fieldset>' +
+            '<div class="form-group">' +
+              '<div class="col-md-4" style="width: 100%"> ' +
+                '<label class="radio-inline" for="radios-0">' +
+                  '<input type="radio" name="radios" id="radios-0" value="1">' +
+                  '1' +
+                '</label> ' +
+                '<label class="radio-inline" for="radios-1">' +
+                  '<input type="radio" name="radios" id="radios-1" value="2">' +
+                  '2' +
+                '</label> ' +
+                '<label class="radio-inline" for="radios-2">'+
+                  '<input type="radio" name="radios" id="radios-2" value="3">'+
+                  '3' +
+                '</label>' +
+                '<label class="radio-inline" for="radios-3">'+
+                  '<input type="radio" name="radios" id="radios-3" value="4">'+
+                  '4' +
+                '</label>'+
+                '<label class="radio-inline" for="radios-4">'+
+                  '<input type="radio" name="radios" id="radios-4" value="5" checked="checked">'+
+                  '5' +
+                '</label>'+
+              '</div>'+
+            '</div>'+
+
+            '<div class="form-group" style="width: 100%">' +
+              '<div class="col-md-12">'+
+                '<textarea class="form-control" id="textarea" name="textarea" placeholder="optional comment..."></textarea>'+
+              '</div>'+
+            '</div>'+
+
+            '<div class="form-group" style="width: 100%">'+
+              '<div class="col-md-8">'+
+                '<button id="button1id" name="button1id" class="btn btn-success">Submit</button>'+
+              '</div>'+
+            '</div>'+
+
+            '</fieldset>'+
+            '</form>'
+
+            a.setAttribute("data-content", form);
+            a.innerText = "Click Me!";
+            popover.append(a);
+
+            return popover;
+        }
+
         try {
 
             var metaAuthor = document.head.querySelector("[name=author]");
@@ -77,69 +77,15 @@ chrome.runtime.sendMessage({}, function(response) {
                 metaAuthor = metaAuthor.content;
             }
             console.log(metaAuthor);
-
-            // var s = document.createElement("script");
-            // s.type = "text/javascript";
-            // s.src = "http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js";
-            // $("head").append(s);
-            //
-            // var s = document.createElement("link");
-            // s.rel = "stylesheet";
-            // s.href = "http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css";
-            // $("head").append(s);
-
-            var elem = document.createElement("img");
-            elem.setAttribute("src", "http://emojipedia-us.s3.amazonaws.com/cache/9c/47/9c477f385239e94fc8a99d35097d6dde.png");
-       		elem.setAttribute("style","width:25px; display:inline");
-            elem.setAttribute("alt", "thumbs up");
             var authorBody = document.getElementsByClassName('metadata__byline__author')[0];
-            authorBody.append(elem);
+            authorBody.parentElement.setAttribute("style", "display: inline; float: left");
 
-            // var newDiv = document.createElement("div");
-            // newDiv.setAttribute("data-role", "main");
-            // newDiv.setAttribute("class", "ui-content");
-            //
-            // elem = document.createElement("a");
-            // elem.setAttribute("href", "#myPopup");
-            // elem.setAttribute("data-rel", "popup");
-            // elem.setAttribute("class", "ui-btn ui-btn-inline ui-corner-all");
-            // elem.innerHTML = "Show Popup";
-            // newDiv.appendChild(elem);
-            //
-            // elem = document.createElement("div");
-            // elem.setAttribute("data-role", "popup");
-            // elem.setAttribute("id", "myPopup");
-            // newDiv.appendChild(elem);
-            //
-            // authorBody.append(newDiv);
-
-            // var div = document.createElement("div");
-            // div.setAttribute("id", "authorsId");
-            // div.innerText = "Test Element";
-            // var authorBody = document.getElementsByClassName('metadata__byline__author')[0];
-            // authorBody.append(div);
-
-            // if (url.includes(sites[i])) {
-            // 	var authorObj = document.getElementsByClassName('metadata__byline__author')[0];
-            // 	var author;
-            // 	if (authorObj.length != 0) {
-            // 		author = authorObj.innerText.substring(3, authorObj.innerText.length - 5);
-            // 	} else {
-            // 		author = authorObj.children[0].innerText;
-            // 	}
-
-            // 	console.log({
-            // 		author: author,
-            // 		url: document.URL
-            // 	});
-
-            // 	break
-            // }
+            authorBody.parentElement.append(makePopover());
+            $('[data-toggle="popover"]').popover({ container: 'body'});
 
 
-            //}
         } catch (e) {
-            // do nothing
+
             console.log("No author found");
         }
     });
