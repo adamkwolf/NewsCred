@@ -5,6 +5,7 @@ import urllib
 import json
 import requests
 from flask import Flask, request, jsonify
+from flask.ext.cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 CREDENTIALS = {
@@ -14,6 +15,7 @@ CREDENTIALS = {
 
 app = Flask(__name__, static_folder='web')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+CORS(app)
 
 MYSQL_HOST = os.environ.get('MYSQL_HOSTNAME', 'localhost')
 MYSQL_SCHEMA = os.environ.get('MYSQL_SCHEMA', 'codefest')
