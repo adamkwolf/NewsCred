@@ -4,7 +4,6 @@ import urllib
 
 import requests
 from flask import Flask, request, jsonify
-from flask import send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 
 CREDENTIALS = {
@@ -261,7 +260,7 @@ def get_or_create_rating(session, user, score, article):
 
 
 def take_snapshot(url, **args):
-    access_key =  os.environ.get('SS_ACCESS_KEY', '')
+    access_key = os.environ.get('SS_ACCESS_KEY', '')
     secret_keyword = os.environ.get('SS_SECRET', '')
 
     # encode URL
