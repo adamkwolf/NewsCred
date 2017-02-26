@@ -9,7 +9,6 @@ RUN pip install -r requirements.txt
 
 # Bundle app source
 COPY ext /src/ext
-COPY web /src/web
 COPY zappa_settings.json /src/zappa_settings.json
 COPY app.py /src/app.py
 
