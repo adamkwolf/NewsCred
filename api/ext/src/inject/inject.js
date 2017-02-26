@@ -61,24 +61,7 @@ chrome.runtime.sendMessage({}, function(response) {
             '</div>'+
 
             '</fieldset>'+
-            '</form>' +
-
-            // $("#idForm").submit(function(e) {
-
-            //     var url = "path/to/your/script.php"; // the script where you handle the form input.
-
-            //     $.ajax({
-            //            type: "POST",
-            //            url: url,
-            //            data: $("#idForm").serialize(), // serializes the form's elements.
-            //            success: function(data)
-            //            {
-            //                alert(data); // show response from the php script.
-            //            }
-            //          });
-
-            //     e.preventDefault(); // avoid to execute the actual submit of the form.
-            // });
+            '</form>';
 
             a.setAttribute("data-content", form);
             a.innerText = "Click Me!";
@@ -100,6 +83,23 @@ chrome.runtime.sendMessage({}, function(response) {
             authorBody.parentElement.append(makePopover());
             $('[data-toggle="popover"]').popover({ container: 'body'});
 
+            HOSTNAME_ROOT = "http://localhost:5000";
+
+            var url2 = HOSTNAME_ROOT + '/api/author/' + metaAuthor + '/';
+            var ratingDiv = document.createElement("div");
+            $.ajax({
+              type: "GET",
+              url: url2,
+              success: function(data) {
+                ratingDiv.setAttribute("style","font-weight: bold");
+                ratingDiv.innerText = "Article Rating (of 5): " + data.result.rating;
+                authorBody.parentElement.append(ratingDiv);
+
+              },
+              error: function(data) {
+                console.log(data);
+              }
+            });
 
         } catch (e) {
 
