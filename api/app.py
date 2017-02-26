@@ -20,13 +20,14 @@ MYSQL_SCHEMA = os.environ.get('MYSQL_SCHEMA', 'codefest')
 cnx_string = 'mysql+pymysql://{}:{}@' + MYSQL_HOST + ':3306/' + MYSQL_SCHEMA
 cnx_uri_string = cnx_string.format(CREDENTIALS['db_user'], CREDENTIALS['db_password'])
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = cnx_uri_string
 db = SQLAlchemy(app)
 
 
-@app.route('/')
+@app.route('/api/')
 def hello_world():
-    return '<meta http-equiv="refresh" content="0; url=/web/index.html" />'
+    return 'Hello'
 
 
 class User(db.Model):
@@ -131,7 +132,7 @@ class Rating(db.Model):
         return '<Rating %r>' % self.id
 
 
-@app.route('/submit', methods=['POST'])
+@app.route('/api/submit', methods=['POST'])
 def add_rating():
     if request.method == 'POST':
         data = request.get_json()
@@ -152,14 +153,14 @@ def add_rating():
         return 'Rated!', 201
 
 
-@app.route('/article/<article_id>/rating', methods=['GET'])
+@app.route('/api/article/<article_id>/rating', methods=['GET'])
 def get_article_rating(article_id):
     if request.method == 'GET':
         rating = get_rating_by_article_id(db.session, article_id)
         return jsonify(rating=rating), 200
 
 
-@app.route('/author/<author_id>/rating', methods=['GET'])
+@app.route('/api/author/<author_id>/rating', methods=['GET'])
 def get_author_rating(author_id):
     if request.method == 'GET':
         author_articles = db.session.query(Article).filter_by(author_id=author_id).all()
@@ -173,7 +174,7 @@ def get_author_rating(author_id):
         return jsonify(rating=rating), 200
 
 
-@app.route('/author/list', methods=['GET'])
+@app.route('/api/author/list', methods=['GET'])
 def get_author_list():
     if request.method == 'GET':
         response = []
@@ -184,7 +185,7 @@ def get_author_list():
         return jsonify(response), 200
 
 
-@app.route('/article/list', methods=['GET'])
+@app.route('/api/article/list', methods=['GET'])
 def get_article_list():
     if request.method == 'GET':
         response = []
