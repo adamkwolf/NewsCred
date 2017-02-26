@@ -1,0 +1,5 @@
+flask
+zappa
+Flask-SQLAlchemy
+pymysql
+flask-cors

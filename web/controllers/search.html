@@ -1,0 +1,35 @@
+<md-content>
+
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
+                <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+            </md-button>
+
+            <h2 flex="" md-truncate="">Newscred</h2>
+
+            <md-button class="md-icon-button" aria-label="Favorite">
+                <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
+            </md-button>
+
+            <md-button class="md-icon-button" aria-label="More">
+                <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+</md-content>
+<div>
+    <div layout="row">
+
+        <div class="uno" flex> {{greeting}}</div>
+        <div class="dos" flex="20">Second item in row</div>
+
+    </div>
+    <div layout="column">
+
+        <div class="uno" flex="66">First item in column</div>
+        <div class="dos" flex="33">Second item in column</div>
+
+    </div>
+</div>
