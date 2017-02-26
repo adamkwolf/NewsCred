@@ -38,6 +38,11 @@ greetingctrl = newsApp.controller('GreetingController', ['$scope', '$location', 
 searchctrl = newsApp.controller('SearchController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     $scope.greeting = 'Hola!';
 
+    $scope.notFound = false;
+    $scope.results = [];
+    $scope.author = {};
+    $scope.rating = 0;
+
     // Simple GET request example:
     $http({
         method: 'GET',
@@ -46,111 +51,17 @@ searchctrl = newsApp.controller('SearchController', ['$scope', '$http', '$routeP
         // this callback will be called asynchronously
         // when the response is available
         // obj to append data to
-        var div = document.getElementById("results");
-        var cardtitle = document.getElementById("card-title");
+        console.log(response.data)
+        if ('error' in response.data['result']) {
+            console.log("404")
+            $scope.notFound = true;
+        } else {
 
-        var table = document.createElement("table");
-        var tr = document.createElement("tr");
-        var th = document.createElement("th");
-        var node = document.createTextNode("Author");
-        th.appendChild(node);
-        tr.appendChild(th);
-        table.appendChild(tr);
+            $scope.results = response.data['result']['articles'];
+            $scope.author = response.data['result']['author'];
+            $scope.rating = response.data['result']['rating'];
 
-        th = document.createElement("th");
-        node = document.createTextNode("Article");
-        th.appendChild(node);
-        tr.appendChild(th);
-        table.appendChild(tr);
-
-        th = document.createElement("th");
-        node = document.createTextNode("Company");
-        th.appendChild(node);
-        tr.appendChild(th);
-        table.appendChild(tr);
-
-        th = document.createElement("th");
-        node = document.createTextNode("Url");
-        th.appendChild(node);
-        tr.appendChild(th);
-        table.appendChild(tr);
-
-        th = document.createElement("th");
-        node = document.createTextNode("Rating");
-        th.appendChild(node);
-        tr.appendChild(th);
-        table.appendChild(tr);
-
-        div.appendChild(table);
-
-        // result object
-        var result = response.data.result;
-        cardtitle.innerHTML = "Search Results: " + parseInt(result.articles.length);
-
-        console.log(result);
-
-        // author
-        var author = result.author.name;
-
-        var rating = result.rating;
-
-        // div.append(author);
-
-        // individual article data
-        for (var i = 0; i < result.articles.length; i++) {
-            var company = result.articles[i].site.company;
-            var website = result.articles[i].site.website_url;
-            var snapshot = result.articles[i].snapshot;
-            var title = result.articles[i].title;
-            var url = result.articles[i].url;
-            // div.append(company);
-            //
-            // div.append(website);
-            // div.append(title);
-            // div.append(url);
-
-            var tr = document.createElement("tr");
-            var th = document.createElement("th");
-            var node = document.createTextNode(author);
-            th.appendChild(node);
-            tr.appendChild(th);
-            table.appendChild(tr);
-
-            th = document.createElement("th");
-            node = document.createTextNode(title);
-            th.appendChild(node);
-            tr.appendChild(th);
-            table.appendChild(tr);
-
-            th = document.createElement("th");
-            node = document.createTextNode(company);
-            th.appendChild(node);
-            tr.appendChild(th);
-            table.appendChild(tr);
-
-            th = document.createElement("th");
-            node = document.createTextNode(url);
-            th.appendChild(node);
-            tr.appendChild(th);
-            table.appendChild(tr);
-
-            th = document.createElement("th");
-            node = document.createTextNode(rating);
-            th.appendChild(node);
-            tr.appendChild(th);
-            table.appendChild(tr);
         }
-
-        function addStyleString(str) {
-            var node = document.createElement('style');
-            node.innerHTML = str;
-            document.body.appendChild(node);
-        }
-
-        addStyleString('table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; }');
-        addStyleString('td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }');
-
-        console.log(table);
 
     }, function errorCallback(response) {
         // called asynchronously if an error occurs

@@ -19,9 +19,39 @@
     </md-toolbar>
 
 </md-content>
-<md-card>
-        <md-card-title id="card-title">Search Results</md-card-title>
-        <md-card-content>
-        <div id="results"></div>
-        </md-card-content>
+<md-card ng-hide="notFound">
+        
+    <md-card-title id="card-title">Search Results</md-card-title>
+        
+    <md-card-content>
+        <h1>Author: {{author.name}}</h1>
+        <h2>Rating: <b>{{rating}}</b></h2>
+        <h3>Articles and Ratings</h3>
+        <div id="resultsx">
+            <table class="resTable">
+                <tr>
+                    <th>Article</th>
+                    <th>Company</th>
+                    <th>Url</th>
+                    <th>Screenshot</th>
+                </tr>
+                <tr ng-repeat="res in results">
+                    <th>{{res['title']}}</th>
+                    <th>{{res['site']['company']}}</th>
+                    <th>{{res['url']}}</th>
+                    <th><img src="{{res['snapshot']}}" /></th>
+                </tr>
+            </table>
+        </div>
+            
+    </md-card-content>
+</md-card>
+<md-card ng-show="notFound">
+        
+    <md-card-title id="card-title">Author not found</md-card-title>
+        
+    <md-card-content>
+        There's no author with that name
+            
+    </md-card-content>
 </md-card>

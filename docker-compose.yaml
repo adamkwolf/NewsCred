@@ -9,6 +9,8 @@ newscred:
     - newscred-mysql:newscred-mysql
   environment:
     - MYSQL_HOSTNAME=newscred-mysql
+    - SS_ACCESS_KEY=394fe66cc5ce890e40f70031913ab7d9
+    - SS_SECRET=screenshot
 newscred-web:
   image: akw54/newscred-web
 newscred-gateway:

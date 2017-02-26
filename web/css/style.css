@@ -6,7 +6,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
 /* start editing from here */
 
-
 .searchCont {
     background-image: url('../images/5.jpg');
     background-position: center center;
@@ -15,7 +14,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     width: 100%;
 }
 
+.resTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+.resTable td, .resTable th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
 
 .searchBody {
     /*background: url(../images/5.jpg) no-repeat;*/
@@ -28,13 +37,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     width: 400px;
     height: 300px;
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
     margin-left: -200px;
     margin-top: -150px;
 }
-
-
 
 /* float left */
 .clear {
@@ -89,7 +96,6 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 100%;
 }
-
 
 .s-bar {
     width: 34%;
