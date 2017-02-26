@@ -5,7 +5,7 @@ import urllib
 import json
 import requests
 from flask import Flask, request, jsonify
-from flask.ext.cors import CORS
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 CREDENTIALS = {
@@ -180,22 +180,31 @@ def get_author_rating(author_name):
     if request.method == 'GET':
         author = db.session.query(Author).filter_by(name=author_name).first()
 
-        author_articles = db.session.query(Article).filter_by(author_id=author.id).all()
+        #if we found an author by that name, do stuff
 
-        sum_ratings = 0
-        for article in author_articles:
-            sum_ratings += get_rating_by_article_id(db.session, article.id)
+        if author:
 
-        rating = sum_ratings / len(author_articles)
+            author_articles = db.session.query(Article).filter_by(author_id=author.id).all()
 
-        res = {}
-        res['author'] = author.serialize()
-        res['rating'] = rating
+            sum_ratings = 0
+            for article in author_articles:
+                sum_ratings += get_rating_by_article_id(db.session, article.id)
 
-        res['articles'] = [art.serialize() for art in author_articles]
+            rating = sum_ratings / len(author_articles)
 
-        # return json.dumps(res), 200
-        return jsonify(result=res), 200
+            res = {}
+            res['author'] = author.serialize()
+            res['rating'] = rating
+
+            res['articles'] = [art.serialize() for art in author_articles]
+
+            # return json.dumps(res), 200
+            return jsonify(result=res), 200
+        else:
+            #else we found nothing
+            res = {}
+            res['error'] = "not found"
+            return jsonify(result=res), 200
 
 #
 # @app.route('/api/author/<author_id>/rating', methods=['GET'])
