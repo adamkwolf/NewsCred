@@ -1,0 +1,20 @@
+newscred-mysql:
+  image: mysql:5.7.17
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    - MYSQL_DATABASE=codefest
+newscred:
+  image: akw54/newscred
+  links:
+    - newscred-mysql:newscred-mysql
+  environment:
+    - MYSQL_HOSTNAME=newscred-mysql
+newscred-web:
+  image: akw54/newscred-web
+newscred-gateway:
+  image: akw54/newscred-gateway
+  ports:
+    - "80:80"
+  links:
+    - newscred:newscred
+    - newscred-web:newscred-web

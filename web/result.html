@@ -36,15 +36,43 @@
     <link rel="stylesheet" href="styles.css">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 
-
     <link href="css/flag.css" rel="stylesheet" type="text/css" media="all"/>
     <script src='https://cdn.rawgit.com/davatron5000/Lettering.js/5a4897f9/jquery.lettering.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <script src="js/index.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("button").click(function(){
+            var URL = "https://3jrf1ijcve.execute-api.us-east-1.amazonaws.com/dev/author/list";
+            $.ajax({
+                url: URL,
+                data: {},
+                error: function() {
+                    console.log("error");
+                    $('#info').html('<p>An error has occurred</p>');
+                },
+                dataType: 'jsonp',
+                success: function(data) {
+                    console.log(data);
+                },
+                type: 'GET'
+            });
 
 
+//        $.ajax({
+//            url: URL,
+//            type: 'GET',
+//            dataType: 'jsonp',
+//            jsonp: 'callback',
+//            jsonpCallback: 'myCallback'
+//        });
+    });
+});
 
+
+    </script>
 
     <style>
     #view-source {
@@ -75,7 +103,7 @@
 
           <form class="form-wrapper cf">
               <input type="text" placeholder="Search articles and authors..." required>
-              <button type="submit">Search</button>
+              <button type="submit" id="action-button">Search</button>
           </form>
 
 <!--           <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
