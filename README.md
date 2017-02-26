@@ -13,6 +13,10 @@ pip install virtualenv
 Create virtual environment
 ```
 virtualenv pyenv
+```
+
+Activate Virtual Env
+```
 source pyenv/bin/activate
 ```
 
