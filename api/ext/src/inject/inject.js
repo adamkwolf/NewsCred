@@ -9,7 +9,7 @@ chrome.runtime.sendMessage({}, function(response) {
             a.setAttribute("href", "#");
             a.setAttribute("title", "Rate this article");
             a.setAttribute("data-toggle", "popover");
-            //a.setAttribute("data-trigger", "focus");
+            a.setAttribute("data-trigger", "focus");
             a.setAttribute("data-html", "true");
             a.setAttribute("width", "500px");
 
