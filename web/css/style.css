@@ -5,71 +5,36 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
 /* start editing from here */
-html, body {
-    background-color: #f0f0f0;
+
+
+.searchCont {
+    background-image: url('../images/5.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
 }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, dl, dt, dd, ol, nav ul, nav li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+
+
+.searchBody {
+    /*background: url(../images/5.jpg) no-repeat;*/
+    background-color: #000080;
+    background-size: cover;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-
-ol, ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-blockquote, q {
-    quotes: none;
-}
-
-blockquote:before, blockquote:after, q:before, q:after {
-    content: '';
-    content: none;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-/* start editing from here */
-a {
-    text-decoration: none;
-}
-
-.txt-rt {
-    text-align: right;
-}
-
-/* text align right */
-.txt-lt {
-    text-align: left;
-}
-
-/* text align left */
-.txt-center {
+.search {
     text-align: center;
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -150px;
 }
 
-/* text align center */
-.float-rt {
-    float: right;
-}
 
-/* float right */
-.float-lt {
-    float: left;
-}
 
 /* float left */
 .clear {
@@ -125,17 +90,6 @@ body {
     font-size: 100%;
 }
 
-.searchBody {
-    /*background: url(../images/5.jpg) no-repeat;*/
-    background-color: #000080;
-    background-size: cover;
-}
-
-.search {
-    text-align: center;
-    margin: 22em 0em 0em 0em;
-    position: relative;
-}
 
 .s-bar {
     width: 34%;
