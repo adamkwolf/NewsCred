@@ -2,6 +2,7 @@ import hashlib
 import os
 import urllib
 
+import json
 import requests
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -45,21 +46,18 @@ class User(db.Model):
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(80))
-    last_name = db.Column(db.String(80))
+    name = db.Column(db.String(80))
 
-    def __init__(self, first_name, last_name):
-        self.first_name = first_name
-        self.last_name = last_name
+    def __init__(self, name):
+        self.name = name
 
     def __repr__(self):
-        return '<Author %r %r>' % (self.first_name, self.last_name)
+        return '<Author %r>' % (self.name)
 
     def serialize(self):
         return {
             'id': self.id,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
+            'name': self.name,
         }
 
 
@@ -74,6 +72,13 @@ class Site(db.Model):
 
     def __repr__(self):
         return '<Site %r>' % self.company
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'company':self.company,
+            'website_url': self.website_url
+        }
 
 
 class Article(db.Model):
@@ -107,7 +112,7 @@ class Article(db.Model):
             'id': self.id,
             'title': self.title,
             'url': self.url,
-            'site': self.site,
+            'site': self.site.serialize(),
             'author': self.author.serialize(),
             'snapshot': self.snapshot
         }
@@ -123,10 +128,13 @@ class Rating(db.Model):
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
     article = db.relationship('Article', backref=db.backref('article', lazy='dynamic'))
 
-    def __init__(self, user, score, article):
+    comment = db.Column(db.Text)
+
+    def __init__(self, user, score, article,comment):
         self.user = user
         self.score = score
         self.article = article
+        self.comment = comment
 
     def __repr__(self):
         return '<Rating %r>' % self.id
@@ -141,11 +149,12 @@ def add_rating():
         site_json = data['site']
         user_json = data['user']
 
+
         user = get_or_create_user(db.session, user_json['username'], user_json['email'])
         site = get_or_create_site(db.session, site_json['company'], site_json['url'])
-        author = get_or_create_author(db.session, article_json['author_fname'], article_json['author_lname'])
+        author = get_or_create_author(db.session, article_json['author_name'])
         article = get_or_create_article(db.session, article_json['title'], article_json['url'], site, author)
-        rating = Rating(user, rating_json['score'], article)
+        rating = Rating(user, rating_json['score'], article, rating_json['comment'])
 
         db.session.add(rating)
         db.session.commit()
@@ -160,10 +169,16 @@ def get_article_rating(article_id):
         return jsonify(rating=rating), 200
 
 
-@app.route('/api/author/<author_id>/rating', methods=['GET'])
-def get_author_rating(author_id):
+"""
+    Author Methods
+"""
+
+@app.route('/api/author/<author_name>/', methods=['GET'])
+def get_author_rating(author_name):
     if request.method == 'GET':
-        author_articles = db.session.query(Article).filter_by(author_id=author_id).all()
+        author = db.session.query(Author).filter_by(name=author_name).first()
+
+        author_articles = db.session.query(Article).filter_by(author_id=author.id).all()
 
         sum_ratings = 0
         for article in author_articles:
@@ -171,7 +186,28 @@ def get_author_rating(author_id):
 
         rating = sum_ratings / len(author_articles)
 
-        return jsonify(rating=rating), 200
+        res = {}
+        res['author'] = author.serialize()
+        res['rating'] = rating
+
+        res['articles'] = [art.serialize() for art in author_articles]
+
+        # return json.dumps(res), 200
+        return jsonify(result=res), 200
+
+#
+# @app.route('/api/author/<author_id>/rating', methods=['GET'])
+# def get_author_rating(author_id):
+#     if request.method == 'GET':
+#         author_articles = db.session.query(Article).filter_by(author_id=author_id).all()
+#
+#         sum_ratings = 0
+#         for article in author_articles:
+#             sum_ratings += get_rating_by_article_id(db.session, article.id)
+#
+#         rating = sum_ratings / len(author_articles)
+#
+#         return jsonify(rating=rating), 200
 
 
 @app.route('/api/author/list', methods=['GET'])
@@ -219,12 +255,12 @@ def get_or_create_user(session, username, email):
     return user
 
 
-def get_or_create_author(session, fname, lname):
-    author = session.query(Author).filter_by(first_name=fname, last_name=lname).first()
+def get_or_create_author(session, fname):
+    author = session.query(Author).filter_by(name=fname).first()
     if author:
         return author
     else:
-        author = Author(fname, lname)
+        author = Author(fname)
         session.add(author)
     return author
 

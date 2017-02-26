@@ -1,6 +1,10 @@
 # newscred
 
-Running the app
+Running the app as a container
+=====
+
+
+Running the app as a container
 =====
 
 Running the app with a mysql container running with name `newscred_mysql`
