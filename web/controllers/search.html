@@ -38,8 +38,8 @@
                 <tr ng-repeat="res in results">
                     <th>{{res['title']}}</th>
                     <th>{{res['site']['company']}}</th>
-                    <th>{{res['url']}}</th>
-                    <th><img src="{{res['snapshot']}}" /></th>
+                    <th><a href="{{res['url']}}">link</a></th>
+                    <th><img   style="margin: auto;display: block;" src="{{res['snapshot']}}" /></th>
                 </tr>
             </table>
         </div>
