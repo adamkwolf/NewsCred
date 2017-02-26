@@ -1,44 +1,33 @@
 import hashlib
-import json
+import os
 import urllib
-import boto3
-import requests
 
-from base64 import b64decode
+import requests
 from flask import Flask, request, jsonify
+from flask import send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 
+CREDENTIALS = {
+    "db_user": os.environ.get('DB_USER', 'root'),
+    "db_password": os.environ.get('DB_PASS', '')
+}
 
-SECRETS = b64decode(
-    'AQECAHg9ZtQddnXseUhr0aIjd2DO5G'
-    'wSp9T4TJbbdHISTvNqwwAAAPswgfgG'
-    'CSqGSIb3DQEHBqCB6jCB5wIBADCB4Q'
-    'YJKoZIhvcNAQcBMB4GCWCGSAFlAwQB'
-    'LjARBAy8S8+XFEvkCCUayOICARCAgb'
-    'PSdhpycaU/cIZtPOq8wbr2g6nPENV8'
-    'JgRZiedQV/QsocchupRKlEf1jfQLtQ'
-    'tCttbkmG5f4rO7Yvl6WRWotxKRjKnp'
-    'kuUX9MS+244udZrgmu/3yZHXYFTLUY'
-    '+b3a/koNU3WvmTQLH6wGM55IbvP/n8w'
-    'mIt9UbFUTc2wRrl3K8bF9Qub1A2xspN'
-    'lgsgcu+xV0NCkyKsqPB1xDshEwljURo'
-    'CHt8cKgttMGFLNQLbrNAtJifgxg=='
-)
-
-
-def get_credentials():
-    kms_client = boto3.client('kms')
-    creds = json.loads(kms_client.decrypt(CiphertextBlob=SECRETS)['Plaintext'])
-    return creds
-
-CREDENTIALS = get_credentials()
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder='web')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'mysql+pymysql://{}:{}@newscred.cbtlqiwse6cm.us-east-1.rds.amazonaws.com:3306/codefest'.format(
-        CREDENTIALS['db_user'], CREDENTIALS['db_password'])
+
+MYSQL_HOST = os.environ.get('MYSQL_HOSTNAME', 'localhost')
+MYSQL_SCHEMA = os.environ.get('MYSQL_SCHEMA', 'codefest')
+
+cnx_string = 'mysql+pymysql://{}:{}@' + MYSQL_HOST + ':3306/' + MYSQL_SCHEMA
+cnx_uri_string = cnx_string.format(CREDENTIALS['db_user'], CREDENTIALS['db_password'])
+
+app.config['SQLALCHEMY_DATABASE_URI'] = cnx_uri_string
 db = SQLAlchemy(app)
+
+
+@app.route('/')
+def hello_world():
+    return '<meta http-equiv="refresh" content="0; url=/web/index.html" />'
 
 
 class User(db.Model):
