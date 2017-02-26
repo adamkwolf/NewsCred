@@ -261,8 +261,8 @@ def get_or_create_rating(session, user, score, article):
 
 
 def take_snapshot(url, **args):
-    access_key = CREDENTIALS['sslayer_access_key']
-    secret_keyword = CREDENTIALS['sslayer_secret_keyword']
+    access_key =  os.environ.get('SS_ACCESS_KEY', '')
+    secret_keyword = os.environ.get('SS_SECRET', '')
 
     # encode URL
     query = urllib.urlencode(dict(url=url, width=350, format='PNG', placeholder=1, **args))
