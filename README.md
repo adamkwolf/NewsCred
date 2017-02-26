@@ -23,7 +23,7 @@ source pyenv/bin/activate
 install dependencies
 
 ```
-pip install -p requirements.txt
+pip install -r requirements.txt
 ```
 
 Run MySQL in container
