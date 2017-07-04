@@ -1,5 +1,5 @@
 # Newscred
-<hr>
+<hr></br>
 ## Inspiration  
 Major topics in the news today threaten the legitimacy of the media. With the White House and the President claiming certain media outlets are "Fake News," and an ever increasing spread of misleading or misinformation. I wanted to create this project to solve this problem. If we had a way to croud-source article ratings then we can determine the legitimacy of the author and article as a whole.
   
